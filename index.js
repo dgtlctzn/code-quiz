@@ -2,8 +2,9 @@ var questionEl = document.getElementById("questions");
 var answerEl = document.getElementById("answers");
 var startEl = document.getElementById("start");
 var headerEl = document.getElementById("header");
+var confirmEl = document.getElementById("confirmation");
 
-quizData = [
+var quizData = [
   {
     question: "Commonly used data types DO NOT include:",
     answers: ["1. strings", "2. booleans", "3. alerts", "4. numbers"],
@@ -34,11 +35,11 @@ quizData = [
     question:
       "String values must be enclosed within ________ when being assigned to variables.",
     answers: ["1. commas", "2. curly brackets", "3. quotes", "4. parenthesis"],
-    correctAnswer: "4. parenthesis",
+    correctAnswer: "3. quotes",
   },
   {
     question:
-      "A very usefule tool used during development and debugging for printing content to the debugger is:",
+      "A very useful tool used during development and debugging for printing content to the debugger is:",
     answers: [
       "1. JavaScript",
       "2. terminal / bash",
@@ -48,6 +49,9 @@ quizData = [
     correctAnswer: "4. console.log",
   },
 ];
+
+// which question the user is on
+var currentNumber = 0;
 
 introPage();
 
@@ -94,8 +98,31 @@ function generateQuestion(questionNumber) {
     displayAnswers(questionNumber);
 }
 
+function grader(userPick, questionNumber) {
+    confirmEl.innerHTML = ""
+    if (userPick === quizData[questionNumber].correctAnswer) {
+        confirmEl.innerHTML = "<p>Correct Answer!</p><hr>"
+    } else {
+        confirmEl.innerHTML = "<p>Wrong Answer</p><hr>"
+    }
+}
+
+// start quiz 
 startEl.addEventListener("click", function(event) {
     if (event.target.matches("button")) {
         generateQuestion(0);
     }
-})
+});
+
+// next question 
+answerEl.addEventListener("click", function(event) {
+    if (event.target.matches("button")) {
+        console.log(event.target.textContent);
+
+        var userAnswer = event.target.textContent;
+        grader(userAnswer, currentNumber);
+
+        currentNumber++;
+        generateQuestion(currentNumber)
+    }
+});
