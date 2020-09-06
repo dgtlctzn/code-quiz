@@ -50,6 +50,7 @@ quizData = [
 ];
 
 introPage();
+displayAnswers(0);
 
 function introPage() {
   var headerText = document.createElement("h1");
@@ -69,3 +70,14 @@ function introPage() {
   headerEl.appendChild(headerText);
 }
 
+function displayAnswers(questionNumber) {
+    answerEl.innerHTML = "";
+    for (var i = 0; i < 4; i++) {
+        var answerButton = document.createElement("button");
+        answerButton.textContent = quizData[questionNumber].answers[i];
+        answerButton.setAttribute("type", "button");
+        answerButton.setAttribute("class", "btn btn-primary");
+
+        answerEl.appendChild(answerButton);
+    }
+}
