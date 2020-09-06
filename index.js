@@ -100,6 +100,19 @@ function subtractTime() {
   changeTimer(currentTime);
 }
 
+// function stopStartTimer () {
+//     currentTime = 75;
+//     changeTimer(currentTime);
+//     if (currentNumber < 5) {
+//         var countdown = setInterval(subtractTime, 1000);
+//     } else if (currentNumber === 4 || currentTime === 0) {
+//         console.log("your here")
+//         var finalScore = currentTime;
+//         changeTimer(finalScore);
+//         clearInterval(countdown);
+//     }
+// }
+
 function generateQuestion(questionNumber) {
   headerEl.innerHTML = "";
   questionEl.innerHTML = "";
@@ -166,6 +179,7 @@ answerEl.addEventListener("click", function (event) {
     currentNumber++;
     generateQuestion(currentNumber);
   } else {
+    clearInterval(timer);
     var userAnswer = event.target.textContent;
     grader(userAnswer, currentNumber);
     var myScore = score();
