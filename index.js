@@ -3,6 +3,7 @@ var answerEl = document.getElementById("answers");
 var startEl = document.getElementById("start");
 var headerEl = document.getElementById("header");
 var confirmEl = document.getElementById("confirmation");
+var timerEl = document.getElementById("timer");
 
 var quizData = [
   {
@@ -52,9 +53,11 @@ var quizData = [
 
 // which question the user is on
 var currentNumber = 0;
+var currentTime = 0;
 
 introPage();
 
+// generates quiz intro page
 function introPage() {
   var headerText = document.createElement("h1");
   headerText.textContent = "Coding Quiz Challenge";
@@ -71,58 +74,78 @@ function introPage() {
   headerEl.appendChild(headerText);
   questionEl.appendChild(startText);
   startEl.appendChild(startButton);
+
+  changeTimer(currentTime);
+}
+
+// timer functions
+function changeTimer(time) {
+    timerEl.textContent = "Time: " + time;
 }
 
 function displayAnswers(questionNumber) {
-    answerEl.innerHTML = "";
-    for (var i = 0; i < 4; i++) {
-        var answerButton = document.createElement("button");
-        answerButton.textContent = quizData[questionNumber].answers[i];
-        answerButton.setAttribute("type", "button");
-        answerButton.setAttribute("class", "btn btn-primary");
+  answerEl.innerHTML = "";
+  for (var i = 0; i < 4; i++) {
+    var answerButton = document.createElement("button");
+    answerButton.textContent = quizData[questionNumber].answers[i];
+    answerButton.setAttribute("type", "button");
+    answerButton.setAttribute("class", "btn btn-primary");
 
-        answerEl.appendChild(answerButton);
-    }
+    answerEl.appendChild(answerButton);
+  }
+}
+
+function subtractTime() {
+    currentTime--;
+    changeTimer(currentTime);
 }
 
 function generateQuestion(questionNumber) {
-    headerEl.innerHTML = ""
-    questionEl.innerHTML = "";
-    startEl.innerHTML = ""
+  headerEl.innerHTML = "";
+  questionEl.innerHTML = "";
+  startEl.innerHTML = "";
 
-    var questionText = document.createElement("p");
-    questionText.textContent = quizData[questionNumber].question;
+  var questionText = document.createElement("p");
+  questionText.textContent = quizData[questionNumber].question;
 
-    questionEl.appendChild(questionText);
+  questionEl.appendChild(questionText);
 
-    displayAnswers(questionNumber);
+  displayAnswers(questionNumber);
 }
 
 function grader(userPick, questionNumber) {
-    confirmEl.innerHTML = ""
-    if (userPick === quizData[questionNumber].correctAnswer) {
-        confirmEl.innerHTML = "<p>Correct Answer!</p><hr>"
-    } else {
-        confirmEl.innerHTML = "<p>Wrong Answer</p><hr>"
-    }
+  confirmEl.innerHTML = "";
+  if (userPick === quizData[questionNumber].correctAnswer) {
+    confirmEl.innerHTML = "<p>Correct Answer!</p><hr>";
+  } else {
+    currentTime -= 10;
+    confirmEl.innerHTML = "<p>Wrong Answer</p><hr>";
+  }
 }
 
-// start quiz 
-startEl.addEventListener("click", function(event) {
-    if (event.target.matches("button")) {
-        generateQuestion(0);
-    }
+// start quiz
+startEl.addEventListener("click", function (event) {
+  if (event.target.matches("button")) {
+    generateQuestion(0);
+    currentTime = 75;
+    changeTimer(currentTime);
+    setInterval(subtractTime, 1000);
+  }
 });
 
-// next question 
-answerEl.addEventListener("click", function(event) {
-    if (event.target.matches("button")) {
-        console.log(event.target.textContent);
+// next question
+answerEl.addEventListener("click", function (event) {
+  if (event.target.matches("button") && currentNumber < quizData.length) {
+    console.log(event.target.textContent);
 
-        var userAnswer = event.target.textContent;
-        grader(userAnswer, currentNumber);
+    var userAnswer = event.target.textContent;
+    grader(userAnswer, currentNumber);
 
-        currentNumber++;
-        generateQuestion(currentNumber)
-    }
+    currentNumber++;
+    generateQuestion(currentNumber);
+  } else {
+    grader(userAnswer, currentNumber);
+    // final screen function
+    console.log("you're done!");
+  }
 });
