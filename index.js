@@ -50,7 +50,6 @@ quizData = [
 ];
 
 introPage();
-displayAnswers(0);
 
 function introPage() {
   var headerText = document.createElement("h1");
@@ -65,9 +64,9 @@ function introPage() {
   startButton.setAttribute("type", "button");
   startButton.setAttribute("class", "btn btn-primary");
 
-  startEl.appendChild(startButton);
-  questionEl.appendChild(startText);
   headerEl.appendChild(headerText);
+  questionEl.appendChild(startText);
+  startEl.appendChild(startButton);
 }
 
 function displayAnswers(questionNumber) {
@@ -81,3 +80,22 @@ function displayAnswers(questionNumber) {
         answerEl.appendChild(answerButton);
     }
 }
+
+function generateQuestion(questionNumber) {
+    headerEl.innerHTML = ""
+    questionEl.innerHTML = "";
+    startEl.innerHTML = ""
+
+    var questionText = document.createElement("p");
+    questionText.textContent = quizData[questionNumber].question;
+
+    questionEl.appendChild(questionText);
+
+    displayAnswers(questionNumber);
+}
+
+startEl.addEventListener("click", function(event) {
+    if (event.target.matches("button")) {
+        generateQuestion(0);
+    }
+})
