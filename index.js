@@ -80,7 +80,7 @@ function introPage() {
 
 // timer functions
 function changeTimer(time) {
-    timerEl.textContent = "Time: " + time;
+  timerEl.textContent = "Time: " + time;
 }
 
 function displayAnswers(questionNumber) {
@@ -96,8 +96,8 @@ function displayAnswers(questionNumber) {
 }
 
 function subtractTime() {
-    currentTime--;
-    changeTimer(currentTime);
+  currentTime--;
+  changeTimer(currentTime);
 }
 
 function generateQuestion(questionNumber) {
@@ -115,23 +115,37 @@ function generateQuestion(questionNumber) {
 
 function grader(userPick, questionNumber) {
   confirmEl.innerHTML = "";
+  console.log("correct: " + quizData[questionNumber].correctAnswer);
   if (userPick === quizData[questionNumber].correctAnswer) {
     confirmEl.innerHTML = "<p>Correct Answer!</p><hr>";
+    setTimeout(function () {
+      confirmEl.innerHTML = "";
+    }, 1000);
   } else {
     currentTime -= 10;
     confirmEl.innerHTML = "<p>Wrong Answer</p><hr>";
+    setTimeout(function () {
+      confirmEl.innerHTML = "";
+    }, 1000);
   }
 }
 
 function finalPage() {
-    var finalHeader = document.createElement("h1");
-    finalHeader.textContent = "All Done!";
+  var finalHeader = document.createElement("h1");
+  finalHeader.textContent = "All Done!";
 
-    answerEl.innerHTML = "";
-    questionEl.innerHTML = "";
+  answerEl.innerHTML = "";
+  questionEl.innerHTML = "";
 
-    headerEl.appendChild(finalHeader);
+  headerEl.appendChild(finalHeader);
 }
+
+function score() {
+  var finalScore = currentTime;
+  changeTimer(finalScore);
+  return finalScore;
+}
+
 // start quiz
 startEl.addEventListener("click", function (event) {
   if (event.target.matches("button")) {
@@ -145,7 +159,6 @@ startEl.addEventListener("click", function (event) {
 // next question
 answerEl.addEventListener("click", function (event) {
   if (event.target.matches("button") && currentNumber < quizData.length - 1) {
-    console.log(event.target.textContent);
 
     var userAnswer = event.target.textContent;
     grader(userAnswer, currentNumber);
@@ -153,7 +166,10 @@ answerEl.addEventListener("click", function (event) {
     currentNumber++;
     generateQuestion(currentNumber);
   } else {
+    var userAnswer = event.target.textContent;
     grader(userAnswer, currentNumber);
+    var myScore = score();
+    console.log(myScore);
     finalPage();
   }
 });
