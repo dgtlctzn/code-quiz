@@ -123,6 +123,15 @@ function grader(userPick, questionNumber) {
   }
 }
 
+function finalPage() {
+    var finalHeader = document.createElement("h1");
+    finalHeader.textContent = "All Done!";
+
+    answerEl.innerHTML = "";
+    questionEl.innerHTML = "";
+
+    headerEl.appendChild(finalHeader);
+}
 // start quiz
 startEl.addEventListener("click", function (event) {
   if (event.target.matches("button")) {
@@ -135,7 +144,7 @@ startEl.addEventListener("click", function (event) {
 
 // next question
 answerEl.addEventListener("click", function (event) {
-  if (event.target.matches("button") && currentNumber < quizData.length) {
+  if (event.target.matches("button") && currentNumber < quizData.length - 1) {
     console.log(event.target.textContent);
 
     var userAnswer = event.target.textContent;
@@ -145,7 +154,6 @@ answerEl.addEventListener("click", function (event) {
     generateQuestion(currentNumber);
   } else {
     grader(userAnswer, currentNumber);
-    // final screen function
-    console.log("you're done!");
+    finalPage();
   }
 });
