@@ -1,4 +1,7 @@
+var questionEl = document.getElementById("questions");
 var answerEl = document.getElementById("answers");
+var startEl = document.getElementById("start");
+var headerEl = document.getElementById("header");
 
 quizData = [
   {
@@ -45,3 +48,24 @@ quizData = [
     correctAnswer: "4. console.log",
   },
 ];
+
+introPage();
+
+function introPage() {
+  var headerText = document.createElement("h1");
+  headerText.textContent = "Coding Quiz Challenge";
+
+  var startText = document.createElement("p");
+  startText.textContent =
+    "Try to answer to following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score time by ten seconds!";
+
+  var startButton = document.createElement("button");
+  startButton.textContent = "Start Quiz";
+  startButton.setAttribute("type", "button");
+  startButton.setAttribute("class", "btn btn-primary");
+
+  startEl.appendChild(startButton);
+  questionEl.appendChild(startText);
+  headerEl.appendChild(headerText);
+}
+
