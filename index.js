@@ -117,14 +117,13 @@ function displayAnswers(questionNumber) {
 
 function stopStartTimer() {
   var countdown = setInterval(function () {
-    if (currentTime > 0) {
+    if (currentTime > 0 && !done) {
       if (currentNumber < quizData.length && done === false) {
         currentTime--;
         changeTimer(currentTime);
-      } else if (done) {
+      } else {
         changeTimer(currentTime);
         clearInterval(countdown);
-        finalPage();
       }
     } else {
       changeTimer(currentTime);
@@ -178,7 +177,6 @@ startEl.addEventListener("click", function (event) {
 
 // next question
 answerEl.addEventListener("click", function (event) {
-  console.log(currentNumber);
   var userAnswer = event.target.textContent;
   if (event.target.matches("button") && currentNumber < quizData.length - 1) {
     grader(userAnswer, currentNumber);
@@ -186,8 +184,7 @@ answerEl.addEventListener("click", function (event) {
     currentNumber++;
     generateQuestion(currentNumber);
   } else {
-    grader(userAnswer, currentNumber);
     done = true;
-    stopStartTimer();
+    grader(userAnswer, currentNumber);
   }
 });
