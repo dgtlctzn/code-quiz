@@ -54,6 +54,7 @@ var quizData = [
 // which question the user is on
 var currentNumber = 0;
 var currentTime = 0;
+var done = false;
 
 introPage();
 
@@ -95,24 +96,18 @@ function displayAnswers(questionNumber) {
   }
 }
 
-function subtractTime() {
-  currentTime--;
-  changeTimer(currentTime);
+function stopStartTimer () {
+    var countdown = setInterval(function() {
+      if (currentNumber < quizData.length && done === false) {
+        currentTime--;
+        changeTimer(currentTime);
+      } else if (done || currentTime === 0) {
+        clearInterval(countdown);
+      }
+    }, 1000);
 }
 
-// function stopStartTimer () {
-//     currentTime = 75;
-//     changeTimer(currentTime);
-//     if (currentNumber < 5) {
-//         var countdown = setInterval(subtractTime, 1000);
-//     } else if (currentNumber === 4 || currentTime === 0) {
-//         console.log("your here")
-//         var finalScore = currentTime;
-//         changeTimer(finalScore);
-//         clearInterval(countdown);
-//     }
-// }
-
+// question generation functions
 function generateQuestion(questionNumber) {
   headerEl.innerHTML = "";
   questionEl.innerHTML = "";
@@ -128,7 +123,6 @@ function generateQuestion(questionNumber) {
 
 function grader(userPick, questionNumber) {
   confirmEl.innerHTML = "";
-  console.log("correct: " + quizData[questionNumber].correctAnswer);
   if (userPick === quizData[questionNumber].correctAnswer) {
     confirmEl.innerHTML = "<p>Correct Answer!</p><hr>";
     setTimeout(function () {
@@ -153,11 +147,11 @@ function finalPage() {
   headerEl.appendChild(finalHeader);
 }
 
-function score() {
-  var finalScore = currentTime;
-  changeTimer(finalScore);
-  return finalScore;
-}
+// function score() {
+//   var finalScore = currentTime;
+//   changeTimer(finalScore);
+//   return finalScore;
+// }
 
 // start quiz
 startEl.addEventListener("click", function (event) {
@@ -165,12 +159,13 @@ startEl.addEventListener("click", function (event) {
     generateQuestion(0);
     currentTime = 75;
     changeTimer(currentTime);
-    setInterval(subtractTime, 1000);
+    stopStartTimer();
   }
 });
 
 // next question
 answerEl.addEventListener("click", function (event) {
+  console.log(currentNumber);
   if (event.target.matches("button") && currentNumber < quizData.length - 1) {
 
     var userAnswer = event.target.textContent;
@@ -179,11 +174,13 @@ answerEl.addEventListener("click", function (event) {
     currentNumber++;
     generateQuestion(currentNumber);
   } else {
-    clearInterval(timer);
+    done = true;
+    stopStartTimer();
     var userAnswer = event.target.textContent;
     grader(userAnswer, currentNumber);
-    var myScore = score();
-    console.log(myScore);
+    var finalScore = currentTime;
+    // var myScore = score();
+    console.log(finalScore);
     finalPage();
   }
 });
