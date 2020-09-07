@@ -4,6 +4,7 @@ var startEl = document.getElementById("start");
 var headerEl = document.getElementById("header");
 var confirmEl = document.getElementById("confirmation");
 var timerEl = document.getElementById("timer");
+var endEl = document.getElementById("end");
 
 var quizData = [
   {
@@ -56,9 +57,7 @@ var currentNumber = 0;
 var currentTime = 0;
 var done = false;
 
-introPage();
-
-// generates quiz intro page
+// page generation functions
 function introPage() {
   var headerText = document.createElement("h1");
   headerText.textContent = "Coding Quiz Challenge";
@@ -79,6 +78,26 @@ function introPage() {
   changeTimer(currentTime);
 }
 
+function finalPage() {
+  var finalHeader = document.createElement("h1");
+  finalHeader.textContent = "All Done!";
+
+  var endText = document.createElement("p");
+  endText.textContent = "Your final score is " + currentTime + ".";
+
+  var inputEl = document.createElement("div");
+  inputEl.setAttribute("id", "end-text")
+  inputEl.innerHTML =
+    "<input placeholder='Enter Initials'/><button type='button' class='btn btn-primary'>Submit</button>";
+
+  answerEl.innerHTML = "";
+  questionEl.innerHTML = "";
+
+  headerEl.appendChild(finalHeader);
+  questionEl.appendChild(endText);
+  endEl.appendChild(inputEl);
+}
+
 // timer functions
 function changeTimer(time) {
   timerEl.textContent = "Time: " + time;
@@ -90,21 +109,22 @@ function displayAnswers(questionNumber) {
     var answerButton = document.createElement("button");
     answerButton.textContent = quizData[questionNumber].answers[i];
     answerButton.setAttribute("type", "button");
-    answerButton.setAttribute("class", "btn btn-primary");
+    answerButton.setAttribute("class", "btn btn-primary m-1");
 
     answerEl.appendChild(answerButton);
   }
 }
 
-function stopStartTimer () {
-    var countdown = setInterval(function() {
-      if (currentNumber < quizData.length && done === false) {
-        currentTime--;
-        changeTimer(currentTime);
-      } else if (done || currentTime === 0) {
-        clearInterval(countdown);
-      }
-    }, 1000);
+function stopStartTimer() {
+  var countdown = setInterval(function () {
+    if (currentNumber < quizData.length && done === false) {
+      currentTime--;
+      changeTimer(currentTime);
+    } else if (done || currentTime === 0) {
+      changeTimer(currentTime);
+      clearInterval(countdown);
+    }
+  }, 1000);
 }
 
 // question generation functions
@@ -137,21 +157,7 @@ function grader(userPick, questionNumber) {
   }
 }
 
-function finalPage() {
-  var finalHeader = document.createElement("h1");
-  finalHeader.textContent = "All Done!";
-
-  answerEl.innerHTML = "";
-  questionEl.innerHTML = "";
-
-  headerEl.appendChild(finalHeader);
-}
-
-// function score() {
-//   var finalScore = currentTime;
-//   changeTimer(finalScore);
-//   return finalScore;
-// }
+introPage();
 
 // start quiz
 startEl.addEventListener("click", function (event) {
@@ -166,21 +172,17 @@ startEl.addEventListener("click", function (event) {
 // next question
 answerEl.addEventListener("click", function (event) {
   console.log(currentNumber);
+  var userAnswer = event.target.textContent;
   if (event.target.matches("button") && currentNumber < quizData.length - 1) {
-
-    var userAnswer = event.target.textContent;
     grader(userAnswer, currentNumber);
 
     currentNumber++;
     generateQuestion(currentNumber);
   } else {
+    grader(userAnswer, currentNumber);
     done = true;
     stopStartTimer();
-    var userAnswer = event.target.textContent;
-    grader(userAnswer, currentNumber);
-    var finalScore = currentTime;
-    // var myScore = score();
-    console.log(finalScore);
+
     finalPage();
   }
 });
