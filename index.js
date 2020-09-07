@@ -117,12 +117,19 @@ function displayAnswers(questionNumber) {
 
 function stopStartTimer() {
   var countdown = setInterval(function () {
-    if (currentNumber < quizData.length && done === false) {
-      currentTime--;
-      changeTimer(currentTime);
-    } else if (done || currentTime === 0) {
+    if (currentTime > 0) {
+      if (currentNumber < quizData.length && done === false) {
+        currentTime--;
+        changeTimer(currentTime);
+      } else if (done) {
+        changeTimer(currentTime);
+        clearInterval(countdown);
+        finalPage();
+      }
+    } else {
       changeTimer(currentTime);
       clearInterval(countdown);
+      finalPage();
     }
   }, 1000);
 }
@@ -133,7 +140,7 @@ function generateQuestion(questionNumber) {
   questionEl.innerHTML = "";
   startEl.innerHTML = "";
 
-  var questionText = document.createElement("p");
+  var questionText = document.createElement("h3");
   questionText.textContent = quizData[questionNumber].question;
 
   questionEl.appendChild(questionText);
@@ -182,7 +189,5 @@ answerEl.addEventListener("click", function (event) {
     grader(userAnswer, currentNumber);
     done = true;
     stopStartTimer();
-
-    finalPage();
   }
 });
