@@ -13,6 +13,11 @@ button {
     margin: 10px, 30px, 10px, 20px;
     width: 150px;
     background: rebeccapurple!important;
+    border-color: rebeccapurple!important;
+}
+
+button:hover {
+    background-color: mediumpurple!important;
 }
 
 #timer {
@@ -21,3 +26,6 @@ button {
     float: right;
 }
 
+#caption {
+    margin-top: 10px;
+}

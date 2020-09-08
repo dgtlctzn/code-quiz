@@ -88,7 +88,7 @@ function finalPage() {
   var inputEl = document.createElement("div");
   inputEl.setAttribute("id", "end-text")
   inputEl.innerHTML =
-    "<input placeholder='Enter Initials'/><button type='button' class='btn btn-primary'>Submit</button>";
+    "<input placeholder='Enter Initials'/><button type='button' class='btn btn-primary m-1'>Submit</button>";
 
   answerEl.innerHTML = "";
   questionEl.innerHTML = "";
@@ -101,18 +101,6 @@ function finalPage() {
 // timer functions
 function changeTimer(time) {
   timerEl.textContent = "Time: " + time;
-}
-
-function displayAnswers(questionNumber) {
-  answerEl.innerHTML = "";
-  for (var i = 0; i < 4; i++) {
-    var answerButton = document.createElement("button");
-    answerButton.textContent = quizData[questionNumber].answers[i];
-    answerButton.setAttribute("type", "button");
-    answerButton.setAttribute("class", "btn btn-primary m-1");
-
-    answerEl.appendChild(answerButton);
-  }
 }
 
 function stopStartTimer() {
@@ -147,16 +135,28 @@ function generateQuestion(questionNumber) {
   displayAnswers(questionNumber);
 }
 
+function displayAnswers(questionNumber) {
+  answerEl.innerHTML = "";
+  for (var i = 0; i < 4; i++) {
+    var answerButton = document.createElement("button");
+    answerButton.textContent = quizData[questionNumber].answers[i];
+    answerButton.setAttribute("type", "button");
+    answerButton.setAttribute("class", "btn btn-primary m-1");
+
+    answerEl.appendChild(answerButton);
+  }
+}
+
 function grader(userPick, questionNumber) {
   confirmEl.innerHTML = "";
   if (userPick === quizData[questionNumber].correctAnswer) {
-    confirmEl.innerHTML = "<p>Correct Answer!</p><hr>";
+    confirmEl.innerHTML = "<p id='caption'>Correct Answer!</p><hr>";
     setTimeout(function () {
       confirmEl.innerHTML = "";
     }, 1000);
   } else {
     currentTime -= 10;
-    confirmEl.innerHTML = "<p>Wrong Answer</p><hr>";
+    confirmEl.innerHTML = "<p id='caption'>Wrong Answer</p><hr>";
     setTimeout(function () {
       confirmEl.innerHTML = "";
     }, 1000);
