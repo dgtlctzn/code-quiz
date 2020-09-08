@@ -9,6 +9,11 @@
     background: yellow;
 }
 
+.score-list {
+    margin: 0;
+    padding: 5px;
+}
+
 button {
     margin: 10px, 30px, 10px, 20px;
     width: 150px;
@@ -26,6 +31,16 @@ button:hover {
     float: right;
 }
 
+#score-page {
+    margin: 10px;
+    height: 100px;
+    float: left;
+}
+
 #caption {
     margin-top: 10px;
+}
+
+.hide {
+    opacity: 0%;
 }

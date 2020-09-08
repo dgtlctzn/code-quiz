@@ -1,3 +1,4 @@
+var topBar = document.getElementById("top-bar");
 var questionEl = document.getElementById("questions");
 var answerEl = document.getElementById("answers");
 var startEl = document.getElementById("start");
@@ -5,6 +6,7 @@ var headerEl = document.getElementById("header");
 var confirmEl = document.getElementById("confirmation");
 var timerEl = document.getElementById("timer");
 var endEl = document.getElementById("end");
+var scoreEl = document.getElementById("score-page");
 
 var quizData = [
   {
@@ -98,6 +100,33 @@ function finalPage() {
   endEl.appendChild(inputEl);
 }
 
+function scorePage() {
+  done = true;
+  stopStartTimer();
+
+  headerEl.innerHTML = "";
+  questionEl.innerHTML = "";
+  answerEl.innerHTML = "";
+  startEl.innerHTML = "";
+  endEl.innerHTML = "";
+  topBar.setAttribute("class", "hide");
+
+  var highScores = document.createElement("h1");
+  highScores.textContent = "Highscores"
+  headerEl.appendChild(highScores);
+
+  var myScores = JSON.parse(localStorage.getItem("scores"));
+  for (var i = 0; i < myScores.length; i++) {
+    var scoreEl = document.createElement("p");
+    scoreEl.setAttribute("class", "score-list")
+    if (i % 2 === 0) {
+      scoreEl.setAttribute("style", "background-color: lavender;")
+    }
+    scoreEl.textContent = (i + 1) + ". " + myScores[i].userName + " - " + myScores[i].score;
+    questionEl.appendChild(scoreEl)
+  }
+}
+
 // timer functions
 function changeTimer(time) {
   timerEl.textContent = "Time: " + time;
@@ -106,18 +135,13 @@ function changeTimer(time) {
 function stopStartTimer() {
   var countdown = setInterval(function () {
     if (currentTime > 0 && !done) {
-      if (currentNumber < quizData.length && done === false) {
-        currentTime--;
-        changeTimer(currentTime);
-      } else {
-        changeTimer(currentTime);
-        clearInterval(countdown);
-      }
+      currentTime--;
+      changeTimer(currentTime);
     } else {
       changeTimer(currentTime);
       clearInterval(countdown);
-      finalPage();
-    }
+      // finalPage();
+    } 
   }, 1000);
 }
 
@@ -198,6 +222,7 @@ answerEl.addEventListener("click", function (event) {
   } else {
     done = true;
     grader(userAnswer, currentNumber);
+    finalPage();
   }
 });
 
@@ -206,9 +231,12 @@ answerEl.addEventListener("click", function (event) {
 endEl.addEventListener("click", function (event) {
   event.preventDefault();
   if (event.target.matches("button")) {
-    // var initialsEl = document.getElementById("initials");
     var endText = document.getElementById("end-text");
-    //to do
     setLocal(endText.value);
+    scorePage();
   }
 });
+
+scoreEl.addEventListener("click", function() {
+  scorePage();
+})
