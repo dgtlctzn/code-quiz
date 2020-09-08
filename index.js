@@ -86,9 +86,9 @@ function finalPage() {
   endText.textContent = "Your final score is " + currentTime + ".";
 
   var inputEl = document.createElement("div");
-  inputEl.setAttribute("id", "end-text")
+  // inputEl.setAttribute("id", "end-text")
   inputEl.innerHTML =
-    "<input placeholder='Enter Initials'/><button type='button' class='btn btn-primary m-1'>Submit</button>";
+    "<input id='end-text' placeholder='Enter Initials'/><button type='button' class='btn btn-primary m-1'>Submit</button>";
 
   answerEl.innerHTML = "";
   questionEl.innerHTML = "";
@@ -163,6 +163,18 @@ function grader(userPick, questionNumber) {
   }
 }
 
+function setLocal(user) {
+  if (!localStorage.getItem("scores")) {
+    var finalScores = [{userName: user, score: currentTime}];
+    localStorage.setItem("scores", JSON.stringify(finalScores));
+  } else {
+    var finalScores = JSON.parse(localStorage.getItem("scores"));
+    var newScores = {userName: user, score: currentTime};
+    finalScores.push(newScores);
+    localStorage.setItem("scores", JSON.stringify(finalScores));
+  }
+}
+
 introPage();
 
 // start quiz
@@ -186,5 +198,17 @@ answerEl.addEventListener("click", function (event) {
   } else {
     done = true;
     grader(userAnswer, currentNumber);
+  }
+});
+
+// enter initials
+
+endEl.addEventListener("click", function (event) {
+  event.preventDefault();
+  if (event.target.matches("button")) {
+    // var initialsEl = document.getElementById("initials");
+    var endText = document.getElementById("end-text");
+    //to do
+    setLocal(endText.value);
   }
 });
