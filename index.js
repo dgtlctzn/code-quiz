@@ -81,19 +81,18 @@ function introPage() {
   questionEl.appendChild(startText);
   startEl.appendChild(startButton);
 
-  currentTime = 55;
+  currentTime = 75;
   changeTimer(currentTime);
 }
 
 function finalPage() {
-  var finalHeader = document.createElement("h1");
+  var finalHeader = document.createElement("h2");
   finalHeader.textContent = "All Done!";
 
   var endText = document.createElement("p");
   endText.textContent = "Your final score is " + currentTime + ".";
 
   var inputEl = document.createElement("div");
-  // inputEl.setAttribute("id", "end-text")
   inputEl.innerHTML =
     "<input id='end-text' placeholder='Enter Initials'/><button type='button' class='btn btn-primary m-1'>Submit</button>";
 
@@ -155,10 +154,8 @@ function stopStartTimer() {
   var countdown = setInterval(function () {
     if (currentTime > 0 && !done && headerEl.textContent !== "Highscores") {
       currentTime--;
-      console.log("1")
       changeTimer(currentTime);
     } else if ((currentTime === 0 || done) && headerEl.textContent !== "Highscores") {
-      console.log("2")
       changeTimer(currentTime);
       clearInterval(countdown);
       finalPage();
@@ -250,7 +247,6 @@ answerEl.addEventListener("click", function (event) {
 });
 
 // enter initials
-
 endEl.addEventListener("click", function (event) {
   event.preventDefault();
   if (event.target.matches("button")) {

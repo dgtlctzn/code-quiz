@@ -1,3 +1,7 @@
+body {
+    width: auto;
+}
+
 #top-bar {
     background: whitesmoke;
     width: 100%;
@@ -5,8 +9,8 @@
     margin-bottom: 50px;
 }
 
-.header {
-    background: yellow;
+#header {
+    width: auto;
 }
 
 .score-list {
@@ -15,8 +19,8 @@
 }
 
 button {
-    margin: 10px, 130px, 10px, 20px;
-    width: auto;
+    margin: 10px, 30px, 10px, 20px;
+    width: 200px;
     background: rebeccapurple!important;
     border-color: rebeccapurple!important;
 }
@@ -27,13 +31,13 @@ button:hover {
 
 #timer {
     margin: 10px;
-    height: 100px;
+    height: 20px;
     float: right;
 }
 
 #score-page {
     margin: 10px;
-    height: 100px;
+    height: 20px;
     color: rebeccapurple;
     float: left;
 }
