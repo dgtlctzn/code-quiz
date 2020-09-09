@@ -8,6 +8,7 @@ var timerEl = document.getElementById("timer");
 var endEl = document.getElementById("end");
 var scoreEl = document.getElementById("score-page");
 
+// master array of answer/question objects
 var quizData = [
   {
     question: "Commonly used data types DO NOT include:",
@@ -54,13 +55,14 @@ var quizData = [
   },
 ];
 
-// which question the user is on
+// variables to track user status
 var currentNumber = 0;
 var currentTime = 0;
 var done = false;
 
 // page generation functions
 function introPage() {
+  //starting page
   headerEl.innerHTML = "";
   questionEl.innerHTML = "";
   topBar.setAttribute("class", "");
@@ -86,6 +88,7 @@ function introPage() {
 }
 
 function finalPage() {
+  //page after quiz completed
   var finalHeader = document.createElement("h2");
   finalHeader.textContent = "All Done!";
 
@@ -105,6 +108,7 @@ function finalPage() {
 }
 
 function scorePage() {
+  //highscores page
   headerEl.innerHTML = "";
   questionEl.innerHTML = "";
   answerEl.innerHTML = "";
@@ -151,6 +155,7 @@ function changeTimer(time) {
 }
 
 function stopStartTimer() {
+  //stops and starts timer depending on user
   var countdown = setInterval(function () {
     if (currentTime > 0 && !done && headerEl.textContent !== "Highscores") {
       currentTime--;
@@ -193,6 +198,7 @@ function displayAnswers(questionNumber) {
 }
 
 function grader(userPick, questionNumber) {
+  //informs user if inputs are correct
   confirmEl.innerHTML = "";
   if (userPick === quizData[questionNumber].correctAnswer) {
     confirmEl.innerHTML = "<p id='caption'>Correct Answer!</p><hr>";
@@ -209,6 +215,7 @@ function grader(userPick, questionNumber) {
 }
 
 function setLocal(user) {
+  //sets scores in local storage
   if (!localStorage.getItem("scores")) {
     var finalScores = [{userName: user, score: currentTime}];
     localStorage.setItem("scores", JSON.stringify(finalScores));
@@ -220,6 +227,7 @@ function setLocal(user) {
   }
 }
 
+//calls the starting page when loaded
 introPage();
 
 // start quiz
@@ -256,10 +264,12 @@ endEl.addEventListener("click", function (event) {
   }
 });
 
+//go to highscores
 scoreEl.addEventListener("click", function() {
   scorePage();
 })
 
+//go back to intro page
 questionEl.addEventListener("click", function(event) {
   event.preventDefault();
   if (event.target.matches("button") && event.target.textContent === "Go Back") {
@@ -267,6 +277,7 @@ questionEl.addEventListener("click", function(event) {
   }
 })
 
+//clear local storage
 questionEl.addEventListener("click", function(event) {
   event.preventDefault();
   if (event.target.matches("button") && event.target.textContent === "Clear Highscores") {
