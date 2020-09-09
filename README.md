@@ -2,7 +2,7 @@
 
 The website that I created features a quiz on JavaScript fundamentals. The structure of the quiz is based on a game format where the user answers questions and is given a score depending on completion time. For every correct answer the timer remains unchanged and for every incorrect answer 10 seconds are deducted from the timer. The scores are logged on a high scores page. 
 
-![Code Quiz Preview](CodeQuizPreview.png)
+![Code Quiz Preview](assets/CodeQuizPreview.png)
 
 The basic page navigation uses JavaScript DOM manipulation to dynamically change the page html. The following code snippet shows a basic example of how the final score page is triggered by the scoreEl button tag:
 ```
