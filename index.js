@@ -61,6 +61,10 @@ var done = false;
 
 // page generation functions
 function introPage() {
+  headerEl.innerHTML = "";
+  questionEl.innerHTML = "";
+  topBar.setAttribute("class", "");
+
   var headerText = document.createElement("h1");
   headerText.textContent = "Coding Quiz Challenge";
 
@@ -77,6 +81,7 @@ function introPage() {
   questionEl.appendChild(startText);
   startEl.appendChild(startButton);
 
+  currentTime = 55;
   changeTimer(currentTime);
 }
 
@@ -101,9 +106,6 @@ function finalPage() {
 }
 
 function scorePage() {
-  done = true;
-  stopStartTimer();
-
   headerEl.innerHTML = "";
   questionEl.innerHTML = "";
   answerEl.innerHTML = "";
@@ -112,19 +114,36 @@ function scorePage() {
   topBar.setAttribute("class", "hide");
 
   var highScores = document.createElement("h1");
-  highScores.textContent = "Highscores"
+  highScores.textContent = "Highscores";
   headerEl.appendChild(highScores);
 
+  stopStartTimer();
+
   var myScores = JSON.parse(localStorage.getItem("scores"));
-  for (var i = 0; i < myScores.length; i++) {
-    var scoreEl = document.createElement("p");
-    scoreEl.setAttribute("class", "score-list")
-    if (i % 2 === 0) {
-      scoreEl.setAttribute("style", "background-color: lavender;")
+  if (myScores) {
+    for (var i = 0; i < myScores.length; i++) {
+      var scoreEl = document.createElement("p");
+      scoreEl.setAttribute("class", "score-list")
+      if (i % 2 === 0) {
+        scoreEl.setAttribute("style", "background-color: lavender;")
+      }
+      scoreEl.textContent = (i + 1) + ". " + myScores[i].userName + " - " + myScores[i].score;
+      questionEl.appendChild(scoreEl)
     }
-    scoreEl.textContent = (i + 1) + ". " + myScores[i].userName + " - " + myScores[i].score;
-    questionEl.appendChild(scoreEl)
   }
+
+  var goBack = document.createElement("button");
+  goBack.textContent = "Go Back";
+  goBack.setAttribute("type", "button");
+  goBack.setAttribute("class", "btn btn-primary m-1");
+
+  var clearHighscores = document.createElement("button");
+  clearHighscores.textContent = "Clear Highscores";
+  clearHighscores.setAttribute("type", "button");
+  clearHighscores.setAttribute("class", "btn btn-primary m-1");
+
+  questionEl.appendChild(goBack);
+  questionEl.appendChild(clearHighscores);  
 }
 
 // timer functions
@@ -134,14 +153,19 @@ function changeTimer(time) {
 
 function stopStartTimer() {
   var countdown = setInterval(function () {
-    if (currentTime > 0 && !done) {
+    if (currentTime > 0 && !done && headerEl.textContent !== "Highscores") {
       currentTime--;
+      console.log("1")
       changeTimer(currentTime);
-    } else {
+    } else if ((currentTime === 0 || done) && headerEl.textContent !== "Highscores") {
+      console.log("2")
       changeTimer(currentTime);
       clearInterval(countdown);
-      // finalPage();
-    } 
+      finalPage();
+    } else if (headerEl.textContent === "Highscores") {
+      changeTimer(currentTime);
+      clearInterval(countdown);
+    }
   }, 1000);
 }
 
@@ -204,9 +228,9 @@ introPage();
 // start quiz
 startEl.addEventListener("click", function (event) {
   if (event.target.matches("button")) {
-    generateQuestion(0);
-    currentTime = 75;
-    changeTimer(currentTime);
+    done = false;
+    currentNumber = 0;
+    generateQuestion(0);   
     stopStartTimer();
   }
 });
@@ -222,7 +246,6 @@ answerEl.addEventListener("click", function (event) {
   } else {
     done = true;
     grader(userAnswer, currentNumber);
-    finalPage();
   }
 });
 
@@ -239,4 +262,19 @@ endEl.addEventListener("click", function (event) {
 
 scoreEl.addEventListener("click", function() {
   scorePage();
+})
+
+questionEl.addEventListener("click", function(event) {
+  event.preventDefault();
+  if (event.target.matches("button") && event.target.textContent === "Go Back") {
+    introPage();
+  }
+})
+
+questionEl.addEventListener("click", function(event) {
+  event.preventDefault();
+  if (event.target.matches("button") && event.target.textContent === "Clear Highscores") {
+    localStorage.clear();
+    scorePage();
+  }
 })

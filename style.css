@@ -15,8 +15,8 @@
 }
 
 button {
-    margin: 10px, 30px, 10px, 20px;
-    width: 150px;
+    margin: 10px, 130px, 10px, 20px;
+    width: auto;
     background: rebeccapurple!important;
     border-color: rebeccapurple!important;
 }
@@ -34,7 +34,12 @@ button:hover {
 #score-page {
     margin: 10px;
     height: 100px;
+    color: rebeccapurple;
     float: left;
+}
+
+#score-page:hover {
+    color: mediumpurple;
 }
 
 #caption {
